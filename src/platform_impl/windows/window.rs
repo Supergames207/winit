@@ -16,7 +16,7 @@ use windows_sys::Win32::Graphics::Dwm::{
     DWM_BB_ENABLE, DWM_BLURBEHIND, DWM_SYSTEMBACKDROP_TYPE, DWM_WINDOW_CORNER_PREFERENCE,
 };
 use windows_sys::Win32::Graphics::Gdi::{
-    ChangeDisplaySettingsExW, ClientToScreen, CreateRectRgn, DeleteObject, InvalidateRgn,
+    ChangeDisplaySettingsExW, ClientToScreen, CreateRectRgn, CreateSolidBrush, DeleteObject, InvalidateRgn,
     RedrawWindow, CDS_FULLSCREEN, DISP_CHANGE_BADFLAGS, DISP_CHANGE_BADMODE, DISP_CHANGE_BADPARAM,
     DISP_CHANGE_FAILED, DISP_CHANGE_SUCCESSFUL, RDW_INTERNALPAINT,
 };
@@ -1416,7 +1416,7 @@ unsafe fn register_window_class(class_name: &[u16]) {
         hInstance: util::get_instance_handle(),
         hIcon: 0,
         hCursor: 0, // must be null in order for cursor state to work properly
-        hbrBackground: 0,
+        hbrBackground: unsafe { CreateSolidBrush(0x00000000) },
         lpszMenuName: ptr::null(),
         lpszClassName: class_name.as_ptr(),
         hIconSm: 0,
